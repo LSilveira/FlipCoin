@@ -3,3 +3,4 @@ build/
 
 ### Node modules files ###
 node_modules/
+package-lock.json
