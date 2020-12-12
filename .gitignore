@@ -1,0 +1,5 @@
+### Solidity built contracts ###
+build/
+
+### Node modules files ###
+node_modules/
