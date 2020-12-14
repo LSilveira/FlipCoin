@@ -3,7 +3,7 @@ var contractInstance;
 
 $(document).ready(function() {
     window.ethereum.enable().then(function(accounts) {
-        contractInstance = new web3.eth.Contract(abi, "0xa07d3EE41cE7EED030ABAe906846798b760Ee3E4", {from: accounts[0]});
+        contractInstance = new web3.eth.Contract(abi, "0xCAa3667c99a067f074F51C2Ac94ab8C3F2fD3bCB", {from: accounts[0]});
 
         updateBalance();
     });
@@ -16,7 +16,7 @@ $(document).ready(function() {
 function updateBalance() {
 
     contractInstance.methods.getBalance().call().then(function(balance) {
-        $("#balance").text(balance + " ETH");
+        $("#balance").text((balance == null ? "0" : balance) + " ETH");
     });
     
 }
