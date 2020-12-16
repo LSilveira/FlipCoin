@@ -3,7 +3,7 @@ var contractInstance;
 
 $(document).ready(function() {
     window.ethereum.enable().then(function(accounts) {
-        contractInstance = new web3.eth.Contract(abi, "0xCAa3667c99a067f074F51C2Ac94ab8C3F2fD3bCB", {from: accounts[0]});
+        contractInstance = new web3.eth.Contract(abi, "0x3f77DA03205843a71E16c2836875bC9c17B3047A", {from: accounts[0]});
 
         updateBalance();
     });
@@ -11,12 +11,17 @@ $(document).ready(function() {
     $("#add_funds_button").click(addFundsButton);
     $("#withdrawal_funds_button").click(withdrawalFunds);
     $("#flip_button").click(flipCoinButton);
+    $("#claim_button").click(clainButton);
 });
 
 function updateBalance() {
 
     contractInstance.methods.getBalance().call().then(function(balance) {
         $("#balance").text((balance == null ? "0" : balance) + " ETH");
+    });
+
+    contractInstance.methods.getReward().call().then(function(reward) {
+        $("#reward").text((reward == null ? "0" : reward) + " ETH");
     });
     
 }
@@ -80,6 +85,23 @@ function addFundsButton() {
 function withdrawalFunds() {
 
     contractInstance.methods.withdrawalFunds().send()
+    .on("transactionHash", function(hash) {
+        console.log("Hash:" + hash);
+    })
+    .on("confirmation", function (confirmationNr) {
+        console.log("Confirmation: " + confirmationNr);
+    })
+    .on("receipt", function(receipt) {
+        console.log(receipt);
+
+        updateBalance();
+    })
+
+}
+
+function clainButton() {
+    
+    contractInstance.methods.claimReward().send()
     .on("transactionHash", function(hash) {
         console.log("Hash:" + hash);
     })
